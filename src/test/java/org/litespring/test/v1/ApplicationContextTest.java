@@ -9,7 +9,7 @@ import java.util.Properties;
 import org.junit.Test;
 import org.litespring.context.ApplicationContext;
 import org.litespring.context.support.ClassPathXmlApplicationContext;
-import org.litespring.context.support.FileSystemXmlApplicationContext;
+import org.litespring.context.support.FileSystemApplicationContext;
 import org.litespring.service.v1.PetStoreService;
 
 public class ApplicationContextTest {
@@ -28,7 +28,7 @@ public class ApplicationContextTest {
 		properties.load(configInputStream);
 		String filePath = properties.getProperty("filePath");
 		
-		ApplicationContext applicationContext = new FileSystemXmlApplicationContext(filePath);
+		ApplicationContext applicationContext = new FileSystemApplicationContext(filePath);
 		PetStoreService service = (PetStoreService) applicationContext.getBean("petStore");
 		assertNotNull(service);
 	}

@@ -3023,8 +3023,8 @@
                                       </net.java.amateras.uml.properties.BooleanPropertyDescriptor>
                                     </propertyDescriptors>
                                     <stereoType></stereoType>
-                                    <name>org.litespring.context.support.FileSystemXmlApplicationContext</name>
-                                    <path>/litespring/src/main/java/org/litespring/context/support/FileSystemXmlApplicationContext.java</path>
+                                    <name>org.litespring.context.support.FileSystemApplicationContext</name>
+                                    <path>/litespring/src/main/java/org/litespring/context/support/FileSystemApplicationContext.java</path>
                                     <isAbstract>false</isAbstract>
                                   </source>
                                   <target class="net.java.amateras.uml.classdiagram.model.ClassModel" reference="../../.."/>
