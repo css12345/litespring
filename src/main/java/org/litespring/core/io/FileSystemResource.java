@@ -1,0 +1,32 @@
+package org.litespring.core.io;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.litespring.util.Assert;
+
+public class FileSystemResource implements Resource {
+
+	private File file;
+	private String path;
+	
+	public FileSystemResource(String path) {
+		Assert.notNull(path, "Path must not be null");
+		this.file = new File(path);
+		this.path = path;
+	}
+		
+
+	@Override
+	public InputStream getInputStream() throws IOException {
+		return new FileInputStream(this.file);
+	}
+
+	@Override
+	public String getDescription() {
+		return "file [" + this.file.getAbsolutePath() + "]";
+	}
+
+}
