@@ -11,24 +11,29 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 	private DefaultBeanFactory beanFactory;
 	private ClassLoader classLoader;
 	
-	public AbstractApplicationContext(String filePath) {
+	public AbstractApplicationContext(String filePath, ClassLoader classLoader) {
 		beanFactory = new DefaultBeanFactory();
+		this.setBeanClassLoader(classLoader);
 		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
 		Resource resource = getResourceByPath(filePath);
 		reader.loadBeanDefinition(resource);
-		beanFactory.setBeanClassLoader(this.getBeanClassLoader());
+	}
+	
+	public AbstractApplicationContext(String filePath) {
+		this(filePath, null);
 	}
 	
 	protected abstract Resource getResourceByPath(String filePath);
-
-	@Override
-	public Object getBean(String beanId) {
-		return beanFactory.getBean(beanId);
-	}
 	
 	@Override
 	public void setBeanClassLoader(ClassLoader classLoader) {
 		this.classLoader = classLoader;
+		this.beanFactory.setBeanClassLoader(classLoader);
+	}
+	
+	@Override
+	public Object getBean(String beanId) {
+		return beanFactory.getBean(beanId);
 	}
 
 	@Override
