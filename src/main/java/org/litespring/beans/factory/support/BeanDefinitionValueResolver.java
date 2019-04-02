@@ -4,11 +4,11 @@ import org.litespring.beans.factory.BeanFactory;
 import org.litespring.beans.factory.config.RuntimeBeanReference;
 import org.litespring.beans.factory.config.TypedStringValue;
 
-public class BeanDefinitionResolver {
+public class BeanDefinitionValueResolver {
 	
 	private BeanFactory factory;
 
-	public BeanDefinitionResolver(BeanFactory factory) {
+	public BeanDefinitionValueResolver(BeanFactory factory) {
 		this.factory = factory;
 	}
 

@@ -70,7 +70,7 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
 		if (propertyValues == null || propertyValues.isEmpty())
 			return;
 
-		BeanDefinitionResolver resolver = new BeanDefinitionResolver(this);
+		BeanDefinitionValueResolver resolver = new BeanDefinitionValueResolver(this);
 		TypeConverter converter = new SimpleTypeConverter();
 		try {
 			for (PropertyValue propertyValue : propertyValues) {
