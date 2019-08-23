@@ -2,6 +2,8 @@ package org.litespring.beans;
 
 import java.util.List;
 
+import org.litespring.beans.factory.config.ConstructorArgument;
+
 public interface BeanDefinition {
 
 	String SCOPE_DEFAULT = "";
@@ -19,4 +21,10 @@ public interface BeanDefinition {
 	void setScope(String scope);
 
 	List<PropertyValue> getPropertyValues();
+
+	ConstructorArgument getConstructorArgument();
+
+	String getID();
+
+	boolean hasConstructorArgumentValues();
 }

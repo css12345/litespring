@@ -87,28 +87,36 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
 				// 将convertedValue的值设置到bean中
 				BeanInfo beanInfo = Introspector.getBeanInfo(bean.getClass());
 				PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
-				for(PropertyDescriptor propertyDescriptor:propertyDescriptors) 
-					if(propertyDescriptor.getName().equals(name)) {
-						convertedValue = converter.convertIfNecessary(convertedValue, propertyDescriptor.getPropertyType());
+				for (PropertyDescriptor propertyDescriptor : propertyDescriptors)
+					if (propertyDescriptor.getName().equals(name)) {
+						convertedValue = converter.convertIfNecessary(convertedValue,
+								propertyDescriptor.getPropertyType());
 						propertyDescriptor.getWriteMethod().invoke(bean, convertedValue);
 						break;
 					}
 			}
 		} catch (Exception e) {
-			throw new BeanCreationException("Failed to obtain BeanInfo for class [" + beanDefinition.getBeanClassName() + "]", e);
+			throw new BeanCreationException(
+					"Failed to obtain BeanInfo for class [" + beanDefinition.getBeanClassName() + "]", e);
 		}
 	}
 
 	private Object instantiateBean(BeanDefinition beanDefinition) {
-		String beanClassName = beanDefinition.getBeanClassName();
-		ClassLoader classloader = this.getBeanClassLoader();
+		if (beanDefinition.hasConstructorArgumentValues()) {
+			ConstructorResolver constructorResolver = new ConstructorResolver(this);
+			return constructorResolver.autowireConstructor(beanDefinition);
+		} else {
 
-		// 通过反射创建实例对象
-		try {
-			Class<?> clazz = classloader.loadClass(beanClassName);
-			return clazz.newInstance();
-		} catch (Exception e) {
-			throw new BeanCreationException("create bean for " + beanClassName + " failed", e);
+			String beanClassName = beanDefinition.getBeanClassName();
+			ClassLoader classloader = this.getBeanClassLoader();
+
+			// 通过反射创建实例对象
+			try {
+				Class<?> clazz = classloader.loadClass(beanClassName);
+				return clazz.newInstance();
+			} catch (Exception e) {
+				throw new BeanCreationException("create bean for " + beanClassName + " failed", e);
+			}
 		}
 	}
 

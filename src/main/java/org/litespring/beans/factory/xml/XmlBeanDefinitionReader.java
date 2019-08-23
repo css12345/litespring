@@ -1,5 +1,7 @@
 package org.litespring.beans.factory.xml;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
@@ -15,6 +17,7 @@ import org.litespring.beans.PropertyValue;
 import org.litespring.beans.factory.BeanDefinitionStoreException;
 import org.litespring.beans.factory.config.RuntimeBeanReference;
 import org.litespring.beans.factory.config.TypedStringValue;
+import org.litespring.beans.factory.config.ConstructorArgument.ValueHolder;
 import org.litespring.beans.factory.support.BeanDefinationRegistry;
 import org.litespring.core.io.Resource;
 import org.litespring.util.StringUtils;
@@ -34,6 +37,7 @@ public class XmlBeanDefinitionReader {
 	public static final String VALUE_ATTRIBUTE = "value";
 	public static final String REF_ATTRIBUTE = "ref";
 	public static final String PROPERTY_ATTRIBUTE = "property";
+	public static final String CONSTRUCTOR_ARG_ELEMENT = "constructor-arg";
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
@@ -66,6 +70,7 @@ public class XmlBeanDefinitionReader {
 					beanDefinition.setScope(bean.attributeValue(SCOPE_ATTRIBUTE));
 				}
 
+				parseConstructorArguments(bean, beanDefinition);
 				parsePropertyElement(bean, beanDefinition);
 
 				this.beanDefinationRegistry.registerBeanDefinition(id, beanDefinition);
@@ -80,6 +85,21 @@ public class XmlBeanDefinitionReader {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public void parseConstructorArguments(Element bean, BeanDefinition beanDefinition) {
+		Iterator<Element> iterator = bean.elementIterator(CONSTRUCTOR_ARG_ELEMENT);
+		while (iterator.hasNext()) {
+			Element element = iterator.next();
+			
+			parseConstructorArgument(element, beanDefinition);
+		}
+	}
+
+	public void parseConstructorArgument(Element element, BeanDefinition beanDefinition) {
+		Object value = parsePropertyValue(element, beanDefinition, null);
+		ValueHolder valueHolder = new ValueHolder(value);
+		beanDefinition.getConstructorArgument().addArgumentValue(valueHolder);
 	}
 
 	/**
